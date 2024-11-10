@@ -10,6 +10,9 @@ function App() {
   const [shadowIntensity, setShadowIntensity] = useState(1);
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
   const [textAlign, setTextAlign] = useState("center");
+  const [borderColor, setBorderColor] = useState("#000000");
+  const [borderWidth, setBorderWidth] = useState(2);
+  const [borderStyle, setBorderStyle] = useState("solid");
 
   const logoRef = useRef(null);
 
@@ -45,17 +48,21 @@ function App() {
     setTextAlign(e.target.value);
   };
 
+  const handleBorderColorChange = (e) => setBorderColor(e.target.value);
+  const handleBorderWidthChange = (e) => setBorderWidth(e.target.value);
+  const handleBorderStyleChange = (e) => setBorderStyle(e.target.value);
+
   const downloadLogo = () => {
-    if(logoRef.current) {
+    if (logoRef.current) {
       toPng(logoRef.current)
         .then((dataUrl) => {
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = dataUrl;
-          link.download = 'logo.png';
+          link.download = "logo.png";
           link.click();
         })
         .catch((error) => {
-          console.error('Failed to download logo', error);
+          console.error("Failed to download logo", error);
         });
     }
   };
@@ -155,7 +162,31 @@ function App() {
           Right
         </label>
       </div>
-      
+
+      <input
+        type="color"
+        value={borderColor}
+        onChange={handleBorderColorChange}
+        className="mb-4"
+      />
+      <input
+        type="range"
+        min="1"
+        max="10"
+        value={borderWidth}
+        onChange={handleBorderWidthChange}
+        className="mb-4"
+      />
+      <select
+        value={borderStyle}
+        onChange={handleBorderStyleChange}
+        className="p-2 mb-4 border border-gray-300 rounded"
+      >
+        <option value="solid">Solid</option>
+        <option value="dashed">Dashed</option>
+        <option value="dotted">Dotted</option>
+      </select>
+
       <button
         onClick={downloadLogo}
         className="px-5 py-5 mt-6 mb-4 bg-green-500 text-white rounded cursor-pointer hover:bg-green-600"
@@ -175,6 +206,9 @@ function App() {
             ? `2px 2px ${shadowIntensity}px rgba(0,0,0,0.5)`
             : "none",
           backgroundColor: backgroundColor,
+          borderColor,
+          borderWidth: `${borderWidth}px`,
+          borderStyle,
         }}
       >
         {logoText}
