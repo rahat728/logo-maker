@@ -14,6 +14,8 @@ function App() {
   const [borderWidth, setBorderWidth] = useState(2);
   const [borderStyle, setBorderStyle] = useState("solid");
   const [padding, setPadding] = useState(10);
+  const [rotation, setRotation] = useState(0);
+  const [opacity, setOpacity] = useState(1);
 
   const logoRef = useRef(null);
 
@@ -29,7 +31,8 @@ function App() {
   const handleBorderWidthChange = (e) => setBorderWidth(e.target.value);
   const handleBorderStyleChange = (e) => setBorderStyle(e.target.value);
   const handlePaddingChange = (e) => setPadding(e.target.value); // New function for padding
-
+  const handleRotationChange = (e) => setRotation(e.target.value);
+  const handleOpacityChange = (e) => setOpacity(e.target.value);
   const downloadLogo = () => {
     if (logoRef.current) {
       toPng(logoRef.current)
@@ -175,8 +178,27 @@ function App() {
             onChange={handlePaddingChange}
             className="mb-4"
           />
+
+          <input
+            type="range"
+            min="0"
+            max="180"
+            value={rotation}
+            onChange={handleRotationChange}
+            className="my-4"
+          />
+
+          <input
+            type="range"
+            min="0.1"
+            max="1"
+            step="0.1"
+            value={opacity}
+            onChange={handleOpacityChange}
+            className="mb-4"
+          />
         </div>
-        
+
         <div className="flex flex-col items-center justify-center">
           <div
             ref={logoRef}
@@ -194,6 +216,8 @@ function App() {
               borderWidth: `${borderWidth}px`,
               borderStyle,
               padding: `${padding}px`,
+              transform: `rotate(${rotation}deg)`,
+              opacity: opacity,
             }}
           >
             {logoText}
